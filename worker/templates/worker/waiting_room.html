@@ -1,0 +1,17 @@
+{% extends 'uploader/base.html' %}
+{% load static %}
+{% block content %}
+{{ block.super }}
+<h1 style="color:green;text-align:center">plz wait for the file:{{ file_id }} to be process</h1>
+<h2 style="color:green;text-align:center" id="ans_box">plz wait for the file:{{ file_id }} to be process</h2>
+<button id="chk_btn">Check</button>
+<script>
+    window.ws = new WebSocket("ws://localhost:8000/ws/waiting_room/");
+    window.ws.onmessage = function(e){
+    document.getElementById('ans_box').innerHTML = e.data;
+    }
+    document.getElementById('chk_btn').onclick = function(){
+    window.ws.send({{ file_id }});
+    };
+</script>
+{% endblock content %}
